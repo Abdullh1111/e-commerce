@@ -30,7 +30,7 @@ const PORT = config?.port || 3000;
 
 app.use(
   cors({
-    origin: "https://e-commerce-drab-gamma.vercel.app",
+    origin: "https://e-commerce-1-axxy.onrender.com",
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",

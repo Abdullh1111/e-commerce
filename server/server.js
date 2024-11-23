@@ -14,17 +14,19 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
+const config  = require("./config");
 
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
-
 mongoose
-  .connect("db_url")
+  .connect(config?.db || "", {
+    dbName: "ecommerce",
+  })
   .then(() => console.log("MongoDB connected"))
   .catch((error) => console.log(error));
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = config?.port || 3000;
 
 app.use(
   cors({

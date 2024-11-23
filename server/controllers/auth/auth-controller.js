@@ -1,10 +1,12 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
+const  config = require("../../config");
 
 //register
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
+  console.log(userName, email, password);
 
   try {
     const checkUser = await User.findOne({ email });
@@ -64,11 +66,11 @@ const loginUser = async (req, res) => {
         email: checkUser.email,
         userName: checkUser.userName,
       },
-      "CLIENT_SECRET_KEY",
+      config.jwt_secret,
       { expiresIn: "60m" }
     );
 
-    res.cookie("token", token, { httpOnly: true, secure: false }).json({
+    res.cookie("token", token, { httpOnly: true, secure: true }).json({
       success: true,
       message: "Logged in successfully",
       user: {
@@ -106,7 +108,7 @@ const authMiddleware = async (req, res, next) => {
     });
 
   try {
-    const decoded = jwt.verify(token, "CLIENT_SECRET_KEY");
+    const decoded = jwt.verify(token, config.jwt_secret);
     req.user = decoded;
     next();
   } catch (error) {
